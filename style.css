@@ -157,3 +157,9 @@ main {
 .news-source {
     margin-block: 12px;
 }
+
+.highlight {
+    background-color: #ffff66; /* Yellow background */
+    color: #333; /* Text color */
+    font-weight: bold; /* Bold text */
+}

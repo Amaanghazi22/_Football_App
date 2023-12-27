@@ -33,6 +33,9 @@ function bindData(articles) {
     });
 }
 
+
+const searchText = document.getElementById('search-text');
+
 function fillDataInCard(cardClone, article) {
 
     const newsImg = cardClone.querySelector('#news-img');
@@ -40,9 +43,13 @@ function fillDataInCard(cardClone, article) {
     const newsSource = cardClone.querySelector('#news-source');
     const newsDesc = cardClone.querySelector('#news-desc');
 
+    
     newsImg.src = article.urlToImage;
     newsTitle.innerHTML = article.title;
-    newsDesc.innerHTML = article.description;
+    
+    // Highlight the search text in the news description
+    const highlightedDescription = highlightSearchText(article.description, searchText.value);
+    newsDesc.innerHTML = highlightedDescription;
 
     const date = new Date(article.publishedAt).toLocaleString("en-US", {
         timeZone: "Asia/Jakarta"
@@ -57,6 +64,20 @@ function fillDataInCard(cardClone, article) {
     });
 }
 
+function highlightSearchText(description, searchText) {
+
+    if(!searchText) return description;
+    
+    // Case-insensitive search and global match to find all occurrences of the search text
+    const regex = new RegExp(searchText, 'ig');
+
+    // Replace occurrences of the search text with the same text wrapped in a <span> tag for highlighting
+    const highlightedDescription = description.replace(regex, match => `<span class="highlight">${match}</span>`);
+
+    return highlightedDescription;
+}
+
+
 let curSelectedNav = null;
 function onNavItemClick(id) {
     fetchNews(id);
@@ -67,7 +88,6 @@ function onNavItemClick(id) {
 }
 
 const searchButton = document.getElementById('search-button');
-const searchText = document.getElementById('search-text');
 
 searchButton.addEventListener('click', () => {
     const query = searchText.value;
